@@ -195,6 +195,7 @@ class CPUPlayer {
   removeColourTags(string, possibleMoves) {
     for (let index = 0; index < possibleMoves.length; index++) {
       let move = possibleMoves[index];
+
       if (string.includes(move)) {
         return move;
       }
@@ -203,13 +204,13 @@ class CPUPlayer {
   }
 
   getEnemyPlayerID(...theIDs) {
-    let enemyID;
-    theIDs.forEach(name => {
+    for (let idIndex = 0; idIndex < theIDs.length; idIndex++) {
+      let name = theIDs[idIndex];
+
       if (name !== this.id) {
-        enemyID = name;
+        return name;
       }
-    });
-    return enemyID;
+    }
   }
 
   printCPUisPickingAMove(id) {
@@ -329,7 +330,7 @@ class ScoreKeeper {
 
   printTournamentWinner() {
     let indexOfWinner = Object.values(this.score).indexOf(
-      returnLargest(Object.values(this.score))
+      returnLargestNumber(Object.values(this.score))
     );
     let winner = Object.keys(this.score)[indexOfWinner];
     print(winner + ' wins the tournament!');
@@ -337,7 +338,7 @@ class ScoreKeeper {
 
   tournamentIsWon() {
     let tournamentIsWon =
-      returnLargest(Object.values(this.score)) >= this.winLimit;
+      returnLargestNumber(Object.values(this.score)) >= this.winLimit;
     if (tournamentIsWon) {
       this.printTournamentWinner();
       return true;
@@ -359,13 +360,19 @@ class RPSGame {
     console.clear();
   }
 
-  getPlayerType() {
+  getPlayerDesignation() {
     let playerDesignation = BLUE + 'player 1' + WHITE;
     let player1Exists = Boolean(this.player1);
 
     if (player1Exists) {
       playerDesignation = MAGENTA + 'player 2' + WHITE;
     }
+
+    return playerDesignation;
+  }
+
+  getPlayerType() {
+    let playerDesignation = this.getPlayerDesignation();
 
     let playerQuestion = 'What kind of player is ' + playerDesignation + '? \n( ' + YELLOW +
       'h' + WHITE + 'uman or ' + YELLOW + 'c' + WHITE + 'pu )\n' + INPUT_PROMPT;
@@ -383,14 +390,19 @@ class RPSGame {
     return playerType;
   }
 
-  makeAPlayer(playerType) {
+  getPlayerColour() {
     let player1Exists = Boolean(this.player1);
-
     let playerColour = BLUE;
 
     if (player1Exists) {
       playerColour = MAGENTA;
     }
+
+    return playerColour;
+  }
+
+  makeAPlayer(playerType) {
+    let playerColour = this.getPlayerColour();
 
     let playerName = '';
 
@@ -406,8 +418,7 @@ class RPSGame {
       return new UserPlayer(playerName);
     }
 
-    let cpuPlayer = new CPUPlayer(playerName);
-    return cpuPlayer;
+    return new CPUPlayer(playerName);
   }
 
   playAgain() {
@@ -457,7 +468,6 @@ class RPSGame {
       this.scoreKeeper.moveHistory.printMoveHistory();
 
       operateMethodsOn([this.player1, this.player2], ['resetMove']);
-
       pressAnyKeyToContinue();
     } while (!this.scoreKeeper.tournamentIsWon() || this.playAgain());
 
@@ -506,7 +516,7 @@ function lengthOfLongestString(...strings) {
   return strings[strings.length - 1].length;
 }
 
-function returnLargest(numbersArray) {
+function returnLargestNumber(numbersArray) {
   let largest = -Infinity;
 
   numbersArray.forEach(number => {
