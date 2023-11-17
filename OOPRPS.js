@@ -211,6 +211,8 @@ class CPUPlayer {
         return name;
       }
     }
+
+    return undefined;
   }
 
   printCPUisPickingAMove(id) {
