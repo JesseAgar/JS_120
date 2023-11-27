@@ -23,22 +23,25 @@ class Rule {
 class RoundResult {
   constructor(winner, player1, player2) {
     this.winner = winner;
-    this.player1 = [player1.id, player1.move];
-    this.player2 = [player2.id, player2.move];
+    this.player1 = {
+      id: player1.id,
+      move: player1.move
+    };
+    this.player2 = {
+      id: player1.id,
+      move: player2.move,
+    };
+
   }
 
   printRoundResult() {
-    let player1id = this.player1[0];
-    let player1Move = this.player1[1];
-    let player2id = this.player2[0];
-    let player2Move = this.player2[1];
-    let winner = this.winner;
-    let resultsSentence = player1id + ' played ' + player1Move + '. ' +
-                          player2id + ' played ' + player2Move + '.';
+    let resultsSentence = this.player1.id + ' played ' + this.player1.move + '. ' +
+    this.player2.id + ' played ' + this.player2.move + '.';
 
-    if (winner === null || player1Move === null || player2Move === null) {
+    if (this.winner === null || this.player1.move === null ||
+        this.player2.move === null) {
       print( resultsSentence + '\nerror');
-    } else if (winner === 'tie') {
+    } else if (this.winner === 'tie') {
       print(resultsSentence + "\nIt's a tie!");
     } else {
       print(resultsSentence + '\n' + this.winner + ' wins!!' + '\n');
@@ -96,7 +99,7 @@ class Referee {
 
   setLizardSpock() {
     let wantsLizardSpock = readline.keyIn('\nWould you like to add Lizard/Spock rules? \n(' +
-    YELLOW + 'y/n' + WHITE + ')\n' + INPUT_PROMPT, {limit: 'yn'});
+    YELLOW + 'y/n' + WHITE + ')\n' + INPUT_PROMPT, {limit: 'YNyn'}).toLowerCase();
 
     if (wantsLizardSpock === 'y') {
       this.rules.spock = new Rule('o', ['rock', 'scissors']);
@@ -211,8 +214,6 @@ class CPUPlayer {
         return name;
       }
     }
-
-    return undefined;
   }
 
   printCPUisPickingAMove(id) {
@@ -408,24 +409,28 @@ class RPSGame {
 
     let playerName = '';
 
-    while (playerName.trim() === '') {
-      playerName = readline.question('What is their name?\n' + INPUT_PROMPT );
-    }
-
-    playerName = playerColour + playerName + WHITE;
+    playerName = readline.question('What is their name?\n' + INPUT_PROMPT );
 
     console.clear();
 
     if (playerType === 'human') {
-      return new UserPlayer(playerName);
+      if (playerName.trim() === '') {
+        playerName = 'Meat Elemental';
+      }
+
+      return new UserPlayer(playerColour + playerName + WHITE);
     }
 
-    return new CPUPlayer(playerName);
+    if (playerName.trim() === '') {
+      playerName = 'CPU';
+    }
+
+    return new CPUPlayer(playerColour + playerName + WHITE);
   }
 
   playAgain() {
     let wantsToPlayAgain = readline.keyIn('\nWould you like to play another tournament? \n(' +
-    YELLOW + 'y/n' + WHITE + ')\n' + INPUT_PROMPT, {limit: 'yn'});
+    YELLOW + 'y/n' + WHITE + ')\n' + INPUT_PROMPT, {limit: 'ynYN'}).toLowerCase();
     console.clear();
 
     if (wantsToPlayAgain === 'y') {
@@ -535,7 +540,7 @@ function makeSpaces(numberOfSpaces) {
 }
 
 function pressAnyKeyToContinue() {
-  print('\n' + YELLOW + '[Press most any key to continue]' + WHITE);
+  print('\n' + YELLOW + '[Press any key to continue]' + WHITE);
   readline.keyIn();
 }
 
