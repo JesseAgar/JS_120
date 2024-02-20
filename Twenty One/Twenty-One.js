@@ -1,7 +1,7 @@
 const READLINE = require('readline-sync');
 
 class Config {
-  static WINS_NEEDED = 2;
+  static WINS_NEEDED = 0;
   static HAND_VALUE_LIMIT = 21;
   static INITIAL_DRAW_COUNT = Math.floor(Config.HAND_VALUE_LIMIT / 10);
   static CPU_STAY_TARGET = Config.HAND_VALUE_LIMIT - 4;
@@ -463,11 +463,11 @@ class Game {
 
   getTournamentWinner() {
     for (let player of this.players) {
-      if (player.score === Config.WINS_NEEDED) {
+      if (player.score === Config.WINS_NEEDED && player.score > 0) {
         return player.name;
       }
     }
-    return undefined;
+    return 'NOBODY';
   }
 
   playAgain() {
