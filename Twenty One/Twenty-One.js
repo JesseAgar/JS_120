@@ -9,13 +9,11 @@ class Config {
   static NUM_CPU_PLAYERS = 2;
   static thereIsOnlyOneHumanPlayer = Config.NUM_HUMAN_PLAYERS === 1
   static thereIsOnlyOneCpuPlayer = Config.NUM_CPU_PLAYERS === 1
-
   static NUM_PLAYERS = Config.NUM_HUMAN_PLAYERS + Config.NUM_CPU_PLAYERS;
   static CPUS_NAME_PREFIX = 'Robot';
   static HUMANS_NAME_PREFIX = 'Human';
   static PAUSE_BETWEEN_DEALS = 500 / Config.INITIAL_DRAW_COUNT;
   static GAP = '     ';
-
   static messages = {
     welcomeToBlackjack: `    ╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ╔╦╗┌─┐
     ║║║├┤ │  │  │ ││││├┤    ║ │ │
