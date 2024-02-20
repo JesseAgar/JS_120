@@ -1,0 +1,11 @@
+print score
+print hands and draws
+hit or stay human
+check for bust
+hit or stay cpu
+calculate winner
+display winner and update score
+press key for next round
+
+check for tournament winner
+ask to play again
