@@ -1,7 +1,7 @@
 const READLINE = require('readline-sync');
 
 class Config {
-  static WINS_NEEDED = 0;
+  static WINS_NEEDED = 2;
   static HAND_VALUE_LIMIT = 21;
   static INITIAL_DRAW_COUNT = Math.floor(Config.HAND_VALUE_LIMIT / 10);
   static CPU_STAY_TARGET = Config.HAND_VALUE_LIMIT - 4;
@@ -15,9 +15,7 @@ class Config {
   static HUMANS_NAME_PREFIX = 'Human';
   static PAUSE_BETWEEN_DEALS = 500 / Config.INITIAL_DRAW_COUNT;
   static GAP = '     ';
-}
 
-class Tools {
   static messages = {
     welcomeToBlackjack: `    ╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ╔╦╗┌─┐
     ║║║├┤ │  │  │ ││││├┤    ║ │ │
@@ -38,7 +36,9 @@ class Tools {
     wonTournament: ' HAS WON THE TOURNAMENT!!!',
     exit: 'Goodbye',
   };
+}
 
+class Tools {
   static print(message) {
     console.log(message);
   }
@@ -72,7 +72,7 @@ class Tools {
 
   static pressAnyKeyToContinue() {
     Tools.print('\n');
-    Tools.print(Tools.messages.pressAnyKey);
+    Tools.print(Config.messages.pressAnyKey);
     READLINE.keyIn();
   }
 }
@@ -196,7 +196,7 @@ class Human extends Player {
 
   wantsToHit() {
     Tools.print('It is ' + this.name + '\'s turn.');
-    Tools.print(Tools.messages.hitOrStay);
+    Tools.print(Config.messages.hitOrStay);
 
     return READLINE.keyIn('', {limit: 'hs'}).toLowerCase() === 'h';
   }
@@ -413,13 +413,13 @@ class Game {
     Tools.print('\n');
     switch (this.roundWinner) {
       case undefined:
-        Tools.print(Tools.messages.noWinner);
+        Tools.print(Config.messages.noWinner);
         break;
       case 'tie':
-        Tools.print(Tools.messages.tie);
+        Tools.print(Config.messages.tie);
         break;
       default:
-        Tools.print(this.roundWinner.name + Tools.messages.hasWon);
+        Tools.print(this.roundWinner.name + Config.messages.hasWon);
         break;
     }
 
@@ -458,7 +458,7 @@ class Game {
     console.clear();
     this.printParameters();
     this.printScoreBoard();
-    Tools.print('\n' + this.getTournamentWinner() + Tools.messages.wonTournament);
+    Tools.print('\n' + this.getTournamentWinner() + Config.messages.wonTournament);
   }
 
   getTournamentWinner() {
@@ -471,7 +471,7 @@ class Game {
   }
 
   playAgain() {
-    Tools.print(Tools.messages.playAgain);
+    Tools.print(Config.messages.playAgain);
     if (Tools.getYesOrNo()) {
       this.resetPlayerScores();
       this.startTwentyOne();
@@ -507,8 +507,8 @@ class Game {
 
   printWelcome() {
     console.clear();
-    Tools.print(Tools.messages.welcomeToBlackjack);
-    Tools.print('\n' + Tools.messages.handValueTarget + Tools.messages.numberOfWins);
+    Tools.print(Config.messages.welcomeToBlackjack);
+    Tools.print('\n' + Config.messages.handValueTarget + Config.messages.numberOfWins);
     Tools.pressAnyKeyToContinue();
   }
 
@@ -582,7 +582,7 @@ class Game {
 
   printExit() {
     console.clear();
-    Tools.print(Tools.messages.exit);
+    Tools.print(Config.messages.exit);
   }
 }
 
